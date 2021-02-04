@@ -64,7 +64,7 @@ else {
     {
         result= result.toFixed(2);
     }
-        setMessage(`${termVal} ${result}`, color)
+        setMessage(`The converted value from ${baseVal} to ${termVal} is ${result}`, color)
 
 }
          baseUI.value= ''
@@ -125,9 +125,33 @@ function calculateConverter(base,term,amount){
                     if(myObjects.coCurr[j].base=== myObjects.coCurr[i].term)
                     {
                       
-                         
                         newAmount = myObjects.coCurr[i].rate * myObjects.coCurr[j].rate * amount;
                         return newAmount;
+                    }
+                    else if(myObjects.coCurr[j].base != myObjects.coCurr[i].term)
+                    {
+                        
+                        let tempResult = calculateConverter(base, myObjects.coCurr[j].base , 1 );
+    
+                         let newObject = {"base" : base, "term":myObjects.coCurr[j].base, rate: parseFloat(tempResult.toFixed(4)) }
+    
+                         myObjects.coCurr.push(newObject);
+                         if(base ===myObjects.coCurr[i].base && term === myObjects.coCurr[j].term)
+                         {
+                               
+                            if(newObject.term=== myObjects.coCurr[j].base)
+                            {
+                                
+                                newAmount = newObject.rate * myObjects.coCurr[j].rate * amount;
+                                 
+                                return newAmount;
+                                
+                            }
+                         }
+
+                        myObjects.coCurr.pop()
+                        console.log(myObjects)
+                          
                     }
                     
                 }
@@ -141,6 +165,7 @@ function calculateConverter(base,term,amount){
                          return newAmount;
                     }
                 }
+                
             }
         }
 
