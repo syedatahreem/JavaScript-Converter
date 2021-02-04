@@ -50,18 +50,18 @@ convertBtn.addEventListener('click', () => {
     if(!(listOfCurrencies.includes(baseVal) && listOfCurrencies.includes(termVal))) {
         // Cannot convert as values entered are out of scope
         color = "red"
-        setMessage(`Unable to find rate ${baseVal} / ${termVal}`, color)
+        setMessage(`Unable to find rate for ${baseVal} / ${termVal}`, color)
 }
 else {
 
     let result = calculateConverter(baseVal, termVal, amountVal);
-
+    // JPY is fixed to 0 decimal places
     if(termVal==="JPY")
     {
         result = result.toFixed(0);
     }
     else
-    {
+    {  // Rest countries are fixed to 2 decimal places
         result= result.toFixed(2);
     }
         setMessage(`The converted value from ${baseVal} to ${termVal} is ${result}`, color)
@@ -150,7 +150,7 @@ function calculateConverter(base,term,amount){
                          }
 
                         myObjects.coCurr.pop()
-                        console.log(myObjects)
+                         
                           
                     }
                     
@@ -220,34 +220,39 @@ function calculateConverter(base,term,amount){
        // Cross takes place, inversion of base and term is calculated
        else if(base!= myObjects.coCurr[i].base && term!= myObjects.coCurr[i].term)
        { 
+        
            for ( var j in myObjects.coCurr)
         {
+             
 
             if(term!= myObjects.coCurr[j].term && base=== myObjects.coCurr[j].term && term=== myObjects.coCurr[i].base)
             {
-                
+                 
                 if(myObjects.coCurr[i].term === myObjects.coCurr[j].base )
                 {
                     newAmount = (1/ (myObjects.coCurr[i].rate * myObjects.coCurr[j].rate)) * amount;
                     return newAmount;
                 }
+
             }
             else if(term!= myObjects.coCurr[j].term && base=== myObjects.coCurr[i].term && term=== myObjects.coCurr[j].base)
             {
-                
+                 
                if( myObjects.coCurr[i].base === myObjects.coCurr[j].term )
                {
                 newAmount = (1/ (myObjects.coCurr[i].rate * myObjects.coCurr[j].rate)) * amount;
                 return newAmount;
 
                }
+          
+
+               }
             }
         }
 
        }
- 
    }
-    }
+    
     
     
 
